@@ -10,7 +10,7 @@ import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.com
 import { HeaderComponent } from './header/header.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { DropdownDirective } from './shared/dropdown.directive';
-import { RecipeService } from './recipes/recipe.service';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { RecipeService } from './recipes/recipe.service';
     DropdownDirective
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

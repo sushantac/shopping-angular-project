@@ -37,5 +37,9 @@ export class RecipeService {
     
     this.shoppingService.addIngredients(ingredients);
   }
+
+  getRecipe(index:number){
+    return this.recipes[index];
+  }
   
 }

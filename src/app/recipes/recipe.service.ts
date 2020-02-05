@@ -11,6 +11,8 @@ import { Subject } from 'rxjs';
 })
 export class RecipeService {
 
+  recipesChanged: Subject<Recipe[]> = new Subject<Recipe[]>();
+
   private recipes: Recipe[] = [
     new Recipe('Chicken Tikka', "This is a spicy chicken dish",
       "https://cdn.pixabay.com/photo/2016/03/05/21/42/appetite-1239048_1280.jpg",
@@ -41,6 +43,21 @@ export class RecipeService {
 
   getRecipe(index:number){
     return this.recipes[index];
+  }
+
+  addRecipe(recipe: Recipe){
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes);
+  }
+
+  updateRecipe(recipe: Recipe, index: number){
+    this.recipes[index] = recipe;
+    this.recipesChanged.next(this.recipes);
+  }
+
+  deleteRecipe(index: number){
+    this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes);
   }
   
 }

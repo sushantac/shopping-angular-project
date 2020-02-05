@@ -20,9 +20,7 @@ export class ShoppingItemComponent implements OnInit, OnDestroy {
   editedItem: Ingredient;
   editedIndex: number;
 
-  subscription: Subscription;
-
-  ngOnInit() {
+   ngOnInit() {
     this.shoppingService.startedEditing.subscribe((index: number) => {
       console.log("reached..." + index);
       this.editedItem = this.shoppingService.getIngredient(index);
@@ -61,6 +59,6 @@ export class ShoppingItemComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(){
-    this.subscription.unsubscribe();
+
   }
 }

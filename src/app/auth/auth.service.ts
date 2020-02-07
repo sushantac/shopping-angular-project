@@ -4,7 +4,8 @@ import { catchError, tap } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
 import { Router } from '@angular/router';
-import { Time } from '@angular/common';
+
+import { environment } from '../../environments/environment';
 
 interface AuthResponseData{
     kind: string,
@@ -21,7 +22,7 @@ export class AuthService{
 
     userSubject:BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
-    private apiKey: string = "AIzaSyDt9-fXr-WhcifLa36g0HB7wzi_wsC-V_s";
+    private apiKey: string = environment.firbaseAPIKey;
     private authUrl: string = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key="+this.apiKey;
     private loginUrl: string = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="+this.apiKey;
 

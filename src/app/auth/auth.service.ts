@@ -4,6 +4,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
 import { Router } from '@angular/router';
+import { Time } from '@angular/common';
 
 interface AuthResponseData{
     kind: string,
@@ -26,6 +27,35 @@ export class AuthService{
 
     constructor(private http: HttpClient, private router: Router){}
 
+    autoLogin(){
+        const userData: {
+            email: string, 
+            id: string, 
+            _token: string, 
+            _tokenExpirationDate: string
+        } = JSON.parse(localStorage.getItem('userData'));
+
+        if(!userData){
+            return;
+        }
+
+        const loadedUser = new User(
+            userData.email, 
+            userData.id, 
+            userData._token, 
+            new Date(userData._tokenExpirationDate)
+        );
+
+        console.log("------------auto login");
+
+        if(loadedUser.token){
+            this.userSubject.next(loadedUser);
+
+            const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+
+            this.autoLogout(expirationDuration);
+        }
+    }
 
     login(email: string, password: string){
         return this.http.post<AuthResponseData>(this.loginUrl, 
@@ -52,8 +82,22 @@ export class AuthService{
     logout(){
         this.userSubject.next(null);
         this.router.navigate(['/login']);
+
+        localStorage.removeItem('userData');
+
+        if(this.timer){
+            clearTimeout(this.timer);
+        }
+        this.timer = null;
     }
 
+    
+    timer: any;
+    autoLogout(expirationDuration: number){
+        this.timer = setTimeout(() => {
+            this.logout();
+        }, expirationDuration);
+    }
 
     private handleAuthentication(response: AuthResponseData){
         console.log(response);
@@ -61,8 +105,11 @@ export class AuthService{
         const user: User = new User(response.email, response.localId, response.idToken, expirationDate);
 
         this.userSubject.next(user);
-    
+        localStorage.setItem('userData', JSON.stringify(user));
+
+        this.autoLogout(+response.expiresIn * 1000);
     }
+    
     private handleError( errorResponse: HttpErrorResponse){
         console.log(errorResponse);
 

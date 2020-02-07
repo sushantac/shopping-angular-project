@@ -6,12 +6,13 @@ import { Recipe } from '../recipes/recipe.model';
 import { map, tap, take, exhaustMap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({providedIn: "root"})
 export class DataStorageService{
 
-    rootURL: string = 'https://recipe-book-7ec35.firebaseio.com/';
+    rootURL: string = environment.firebaseServerUrl;
 
- 
     constructor(private http: HttpClient, private recipeService: RecipeService, private authService: AuthService){
 
     }

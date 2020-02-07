@@ -3,7 +3,7 @@
         <div *ngIf="isLoading" style="text-align: center;">
             <app-loading-spinner></app-loading-spinner>
         </div>
-        
+
         <form #loginForm="ngForm" *ngIf="!isLoading">
             <div class="form-group">
                 <label for="email">E-mail</label>
@@ -28,9 +28,10 @@
                     required
                     minlength="6">
             </div>
-            <div *ngIf="errorMessage" class="alert alert-danger">
+            <!-- <div *ngIf="errorMessage" class="alert alert-danger">
                 <p>{{errorMessage}}</p>
-            </div>
+            </div> -->
+            <app-alert [message]="errorMessage" *ngIf="errorMessage" (close)="onHandleError()"></app-alert>
             <div *ngIf="successMessage" class="alert alert-success">
                 <p>{{successMessage}}</p>
             </div>

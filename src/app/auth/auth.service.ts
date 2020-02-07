@@ -76,7 +76,7 @@ export class AuthService{
                 password: password,
                 returnSecureToken: true
             }
-        ).pipe(catchError(this.handleError), tap(this.handleAuthentication));
+        ).pipe(catchError(this.handleError), tap(this.handleAuthentication.bind(this)));
     }
 
     logout(){
@@ -103,6 +103,8 @@ export class AuthService{
         console.log(response);
         const expirationDate: Date = new Date( new Date().getTime() + +response.expiresIn * 1000);
         const user: User = new User(response.email, response.localId, response.idToken, expirationDate);
+
+        console.log("found error: " + this.userSubject);
 
         this.userSubject.next(user);
         localStorage.setItem('userData', JSON.stringify(user));

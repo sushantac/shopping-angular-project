@@ -25,9 +25,7 @@ import { AuthModule } from './auth/auth.module';
     AppRoutingModule,
     HttpClientModule,
 
-    ShoppingModule,
-    SharedModule,
-    AuthModule
+    SharedModule
   ],
   providers: [
     { 
@@ -37,7 +35,7 @@ import { AuthModule } from './auth/auth.module';
     }
   ],
   bootstrap: [AppComponent],
-  
+
   entryComponents: [
     AlertComponent
   ]

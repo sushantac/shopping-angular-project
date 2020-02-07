@@ -1,5 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { DataStorageService } from '../shared/data-storage.service';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 
 
 @Component({
@@ -9,10 +11,14 @@ import { DataStorageService } from '../shared/data-storage.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private dataService: DataStorageService) { }
+  user:User = null;
+
+  constructor(private dataService: DataStorageService, private authService: AuthService) { }
 
   ngOnInit() {
-
+    this.authService.userSubject.subscribe( user => {
+      this.user = user;
+    });
   }
 
   onSaveData(){

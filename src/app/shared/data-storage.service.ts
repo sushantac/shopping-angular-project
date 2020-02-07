@@ -18,30 +18,16 @@ export class DataStorageService{
 
     storeRecipes(){
         const recipes = this.recipeService.getRecipes();
-        this.authService.userSubject.pipe(
-            take(1), 
-            exhaustMap( user => {
-                return this.http.put(this.rootURL + "recipes.json", recipes,
-                {
-                    params: new HttpParams().set('auth', user.token)
-                });
-            
-            })
-        ).subscribe(response => {
+        this.http.put(this.rootURL + "recipes.json", recipes)
+        .subscribe(response => {
             console.log(response);
         }); 
     }
 
     fetchRecipes(){
-        return this.authService.userSubject.pipe(
-            
-            take(1), 
-            exhaustMap(user => {
-                return this.http.get<Recipe[]>(this.rootURL+"recipes.json",
-                {
-                    params: new HttpParams().set('auth', user.token)
-                });
-            }),
+      
+        return this.http.get<Recipe[]>(this.rootURL+"recipes.json")
+        .pipe(
             map(recipes => {
                     return recipes.map(recipe => {
                         return {...recipe, ingredients: recipe['ingredients'] ? recipe.ingredients : []}
@@ -50,7 +36,8 @@ export class DataStorageService{
             tap(recipes => {
                 console.log(recipes);
                 this.recipeService.updateRecipesList(recipes);
-            }))
+            })
+        );
     }
 
     fetchShoppingList(){

@@ -10,7 +10,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { AlertComponent } from './shared/alert/alert.component';
 
 import { HeaderComponent } from './header/header.component';
-import { RecipesModule } from './recipes/recipes.module';
+
 import { ShoppingModule } from './shopping-list/shopping.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
@@ -25,7 +25,6 @@ import { AuthModule } from './auth/auth.module';
     AppRoutingModule,
     HttpClientModule,
 
-    RecipesModule,
     ShoppingModule,
     SharedModule,
     AuthModule
@@ -38,6 +37,7 @@ import { AuthModule } from './auth/auth.module';
     }
   ],
   bootstrap: [AppComponent],
+  
   entryComponents: [
     AlertComponent
   ]

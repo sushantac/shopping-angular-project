@@ -36,12 +36,14 @@ export class StartIngredientEdit implements Action{
 
 export class StopIngredientEdit implements Action{
     readonly type: string = STOP_INGREDIENT_EDIT;
-    constructor(){}  
+    constructor(public payload?: any){}
 }
 
 
 export type ShoppingListActions =  
-    | AddIngredients 
+    AddIngredients 
     | AddIngredient 
     | UpdateIngredient 
-    | DeleteIngredient;
+    | DeleteIngredient
+    | StartIngredientEdit
+    | StopIngredientEdit;

@@ -46,6 +46,6 @@ testem.log
 Thumbs.db
 
 # Other files
-.firebase/
-**/environment.prod.ts
-**/environment.ts
+.firebase/*
+src/environments/environment.prod.ts
+/**/environment.ts

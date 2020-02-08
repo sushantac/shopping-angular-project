@@ -6,6 +6,9 @@ import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingService } from '../shopping-list/shopping.service';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import * as ShoppingListActions from '../shopping-list/store/shopping-list.action'
+import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer'
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +32,10 @@ export class RecipeService {
 
   recipeSelctionChanged: Subject<Recipe> = new Subject<Recipe>();
 
-  constructor(private shoppingService: ShoppingService, private http: HttpClient) { 
+  constructor(
+    private shoppingService: ShoppingService, 
+    private http: HttpClient,
+    private store: Store<fromShoppingList.AppState>) { 
 
   }
 
@@ -54,7 +60,8 @@ export class RecipeService {
 
 
   addIngredientsToShoppingList(ingredients: Ingredient[]){
-    this.shoppingService.addIngredients(ingredients);
+    //this.shoppingService.addIngredients(ingredients);
+    this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
   }
   getRecipe(index:number){
     return this.recipes[index];

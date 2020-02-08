@@ -40,8 +40,6 @@ export class AuthComponent implements OnInit, OnDestroy{
     this.errorMessage = null;
     this.isLoading = true;
 
-    console.log(loginForm.value);
-
     this.signUpInfo = loginForm.value;
 
     this.authService.login(this.signUpInfo.email, this.signUpInfo.password)

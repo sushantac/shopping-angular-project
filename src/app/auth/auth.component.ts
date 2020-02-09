@@ -1,11 +1,12 @@
 import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from './auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AlertComponent } from '../shared/alert/alert.component';
-import { PlaceholderDirective } from '../shared/placeholder.directive';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
+import * as AuthActions from '../auth/store/auth.actions';
 
 @Component({
   selector: 'app-auth',
@@ -24,11 +25,8 @@ export class AuthComponent implements OnInit, OnDestroy{
   constructor(
     private authService: AuthService, 
     private router: Router, 
-    private componentFactoryResolver: ComponentFactoryResolver) { 
-
-  }
-
-  ngOnInit() {
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private store: Store<fromApp.AppState>) { 
 
   }
 
@@ -42,6 +40,9 @@ export class AuthComponent implements OnInit, OnDestroy{
 
     this.signUpInfo = loginForm.value;
 
+    this.store.dispatch(new AuthActions.LoginStart({email: loginForm.value.email, password: loginForm.value.password}));
+
+    /**
     this.authService.login(this.signUpInfo.email, this.signUpInfo.password)
     .subscribe(response => {
         this.isLoading = false;
@@ -54,6 +55,7 @@ export class AuthComponent implements OnInit, OnDestroy{
         this.isLoading = false;
       }
     );
+     */
     
     
   }
@@ -66,15 +68,6 @@ export class AuthComponent implements OnInit, OnDestroy{
       this.isLoading = true;
 
       this.signUpInfo = loginForm.value;
-      this.authService.signUp(this.signUpInfo.email, this.signUpInfo.password).subscribe(response => {
-        
-        this.successMessage = "User signed up successfully! Now you can login!";
-        
-        this.isLoading = false;
-      }, errorMessage =>{
-        this.errorMessage = errorMessage;
-        this.isLoading = false;
-      })
   }
 
   onHandleError(){
@@ -105,5 +98,17 @@ export class AuthComponent implements OnInit, OnDestroy{
     if(this.closeSub){
       this.closeSub.unsubscribe();
     }
+  }
+
+  ngOnInit(){
+
+    this.store.select('auth').subscribe( authState => {
+      this.isLoading = authState.loading;
+      this.errorMessage = authState.authError;
+      if(this.errorMessage){
+        this.showErrorAlert(this.errorMessage);
+      }
+    });
+    
   }
 }

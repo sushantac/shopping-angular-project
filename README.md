@@ -1,4 +1,4 @@
-# Angular Practise Project
+# Angular Project
 
 To explore angular fetaures!
 

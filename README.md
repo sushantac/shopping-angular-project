@@ -1,4 +1,4 @@
-# ShoppingProject
+# Angular Practise Project
 
 To explore angular fetaures!
 
